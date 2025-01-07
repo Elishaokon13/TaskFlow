@@ -13,11 +13,7 @@ const TaskDApp = () => {
 
   const address = useAddress();
   const contractAddress = "0xE6402f0B80c3E097F62977b3F81Cd114217D26B3"; // Update with your deployed contract address
-
-  // Initialize provider and contract
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(contractAddress, TaskManagerABI, signer);
+  const [contract, setContract] = useState(null); // State for contract instance
 
   const showToast = (title, message, type = "success") => {
     setToast({ show: true, title, message, type });
@@ -25,19 +21,26 @@ const TaskDApp = () => {
   };
 
   useEffect(() => {
-    if (address) {
-      loadTasks();
+    if (typeof window !== "undefined" && address) {
+      // Initialize provider and contract on the client side
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contractInstance = new ethers.Contract(contractAddress, TaskManagerABI, signer);
+      setContract(contractInstance);
+      loadTasks(contractInstance);
     }
   }, [address]);
 
-  const loadTasks = async () => {
+  const loadTasks = async (contractInstance) => {
     try {
-      const data = await contract.getTasks();
-      setTasks(data.map((task) => ({
-        id: task.id.toNumber(),
-        name: task.name,
-        isCompleted: task.isCompleted
-      })));
+      const data = await contractInstance.getTasks();
+      setTasks(
+        data.map((task) => ({
+          id: task.id.toNumber(),
+          name: task.name,
+          isCompleted: task.isCompleted,
+        }))
+      );
     } catch (error) {
       showToast("Error Loading Tasks", error.message, "error");
     }
@@ -52,7 +55,7 @@ const TaskDApp = () => {
       const tx = await contract.addTask(newTask);
       await tx.wait(); // Wait for the transaction to be mined
       setNewTask("");
-      await loadTasks();
+      await loadTasks(contract);
       showToast("Task Added", "Your task has been successfully added to the blockchain.");
     } catch (error) {
       showToast("Error Adding Task", error.message, "error");
@@ -66,7 +69,7 @@ const TaskDApp = () => {
       setIsLoading(true);
       const tx = await contract.completeTask(id);
       await tx.wait();
-      await loadTasks();
+      await loadTasks(contract);
       showToast("Task Completed", "Task marked as completed.");
     } catch (error) {
       showToast("Error Completing Task", error.message, "error");
@@ -80,7 +83,7 @@ const TaskDApp = () => {
       setIsLoading(true);
       const tx = await contract.deleteTask(id);
       await tx.wait();
-      await loadTasks();
+      await loadTasks(contract);
       showToast("Task Deleted", "Task has been removed.");
     } catch (error) {
       showToast("Error Deleting Task", error.message, "error");
@@ -108,7 +111,7 @@ const TaskDApp = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-purple-600">TaskChain</h1>
+              <h1 className="text-xl font-bold text-purple-600">TaskFlow</h1>
             </div>
             <div className="hidden sm:flex items-center">
               <ConnectWallet className="!bg-purple-600 !text-white hover:!bg-purple-700" btnTitle="Connect Wallet" />

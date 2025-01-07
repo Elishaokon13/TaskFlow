@@ -39,7 +39,7 @@ TaskFlow is a decentralized task management dApp built on the Monad Devnet. It a
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/taskflow.git
+   git clone https://github.com/Elishaokon13/taskflow.git
    cd taskflow
    ```
 

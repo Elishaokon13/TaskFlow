@@ -1,31 +1,59 @@
-import { ThirdwebProvider, Chain } from "@thirdweb-dev/react";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 import "../styles/globals.css";
-// Define your custom chain
+import Head from "next/head";
+
+// Define your custom chain using environment variables
 const customChain = {
-  chainId: 41454, // Chain ID for your custom chain
-  rpc: ["https://devnet1.monad.xyz/rpc/6tanDgZFQbbRDmMFjy8LdgpTdIRiPfYaaqIW0NUY"], // RPC URL
-  name: "Monad Devnet", // A friendly name for the chain
+  chainId: parseInt(process.env.NEXT_PUBLIC_CUSTOM_CHAIN_ID), // Chain ID for your custom chain
+  rpc: [process.env.NEXT_PUBLIC_CUSTOM_RPC_URL], // RPC URL
+  name: process.env.NEXT_PUBLIC_CUSTOM_CHAIN_NAME, // A friendly name for the chain
   nativeCurrency: {
-    name: "Monad Token", // Native token name
-    symbol: "MON",       // Native token symbol (e.g., ETH for Ethereum)
-    decimals: 18         // Number of decimals for the native token
+    name: process.env.NEXT_PUBLIC_NATIVE_CURRENCY_NAME, // Native token name
+    symbol: process.env.NEXT_PUBLIC_NATIVE_CURRENCY_SYMBOL, // Native token symbol (e.g., ETH for Ethereum)
+    decimals: parseInt(process.env.NEXT_PUBLIC_NATIVE_CURRENCY_DECIMALS), // Number of decimals for the native token
   },
-  shortName: "monad-dev",  // A short name for the chain
-  slug: "monad",           // Optional: slug used by thirdweb (e.g., in URLs)
+  shortName: process.env.NEXT_PUBLIC_CUSTOM_CHAIN_SHORT_NAME, // A short name for the chain
+  slug: process.env.NEXT_PUBLIC_CUSTOM_CHAIN_SLUG, // Optional: slug used by thirdweb (e.g., in URLs)
   explorers: [
     {
-      name: "Monad Explorer",  // Name of the explorer
-      url: "https://explorer.monad.xyz", // Link to a blockchain explorer for your chain
-      standard: "EIP3091" // Standard for blockchain explorers
-    }
-  ]
+      name: process.env.NEXT_PUBLIC_EXPLORER_NAME, // Name of the explorer
+      url: process.env.NEXT_PUBLIC_EXPLORER_URL, // Link to a blockchain explorer for your chain
+      standard: process.env.NEXT_PUBLIC_EXPLORER_STANDARD, // Standard for blockchain explorers
+    },
+  ],
 };
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThirdwebProvider activeChain={customChain}>
-      <Component {...pageProps} />
-    </ThirdwebProvider>
+    <>
+      <Head>
+        {/* Primary Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Manage your tasks seamlessly on the blockchain with TaskFlow. Add, complete, and delete tasks with full transparency and security." />
+        <meta name="keywords" content="TaskFlow, blockchain tasks, decentralized task manager, task management, Web3, blockchain productivity" />
+        <meta name="author" content="Monad Devrel Intern" />
+
+        {/* Title */}
+        <title>TaskFlow - Blockchain-Based Task Manager</title>
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.TaskFlow.com" />
+        <meta property="og:title" content="TaskFlow - Blockchain-Based Task Manager" />
+        <meta property="og:description" content="Manage your tasks seamlessly on the blockchain with TaskFlow. Add, complete, and delete tasks with full transparency and security." />
+        
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.TaskFlow.com" />
+        <meta property="twitter:title" content="TaskFlow - Blockchain-Based Task Manager" />
+        <meta property="twitter:description" content="Manage your tasks seamlessly on the blockchain with TaskFlow. Add, complete, and delete tasks with full transparency and security." />
+        
+      </Head>
+      <ThirdwebProvider activeChain={customChain}>
+        <Component {...pageProps} />
+      </ThirdwebProvider>
+    </>
   );
 }
 
