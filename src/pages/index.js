@@ -93,11 +93,11 @@ const TaskDApp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-200 to-purple-400 transition-all duration-500">
       {/* Toast Notifications */}
       {toast.show && (
         <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-transform ${
+          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-transform transform ${
             toast.type === "error" ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
           }`}
         >
@@ -107,19 +107,19 @@ const TaskDApp = () => {
       )}
 
       {/* Navbar */}
-      <nav className="bg-gray-800 shadow-md">
+      <nav className="bg-white bg-opacity-30 backdrop-blur-md shadow-md transition-shadow duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-purple-600">TaskFlow</h1>
             </div>
             <div className="hidden sm:flex items-center">
-              <ConnectWallet className="!bg-purple-600 !text-white hover:!bg-purple-700" btnTitle="Connect Wallet" />
+              <ConnectWallet className="!bg-purple-600 !text-white hover:!bg-purple-700 transition-colors duration-300" btnTitle="Connect Wallet" />
             </div>
             <div className="sm:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-gray-900 p-2"
+                className="text-gray-600 hover:text-gray-900 p-2 transition-colors duration-300"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -127,8 +127,8 @@ const TaskDApp = () => {
           </div>
         </div>
         {isMenuOpen && (
-          <div className="sm:hidden bg-white border-t border-gray-200 p-4">
-            <ConnectWallet className="!bg-purple-600 !text-white hover:!bg-purple-700 w-full" btnTitle="Sign In" />
+          <div className="sm:hidden bg-white bg-opacity-30 backdrop-blur-md border-t border-gray-200 p-4">
+            <ConnectWallet className="!bg-purple-600 !text-white hover:!bg-purple-700 transition-colors duration-300 w-full" btnTitle="Sign In" />
           </div>
         )}
       </nav>
@@ -136,14 +136,14 @@ const TaskDApp = () => {
       {/* Main Content */}
       <div className="max-w-3xl mx-auto p-6">
         {!address ? (
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-8 text-center">
+          <div className="bg-white bg-opacity-30 backdrop-blur-md border border-purple-200 rounded-lg p-4 mt-8 text-center transition-transform transform hover:scale-105">
             <p className="text-purple-800">
               Connect your wallet to manage your tasks on the blockchain.
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-xl mt-8">
-            <div className="bg-purple-600 p-6">
+          <div className="bg-white bg-opacity-30 backdrop-blur-md rounded-lg shadow-xl mt-8 transition-transform transform hover:scale-105">
+            <div className="bg-purple-600 p-6 rounded-t-lg">
               <h2 className="text-2xl font-bold text-white text-center">My Tasks</h2>
             </div>
             <div className="p-6">
@@ -153,28 +153,29 @@ const TaskDApp = () => {
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
                   placeholder="Enter task name"
-                  className="border text-black rounded-lg p-2 flex-1"
+                  className="border text-black rounded-lg p-2 flex-1 transition-shadow duration-300 focus:shadow-outline focus:outline-none bg-white bg-opacity-70 backdrop-blur-md"
                 />
                 <button
                   type="submit"
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
+                  className={`relative inline-flex items-center justify-center px-4 py-2 overflow-hidden text-white font-medium transition-all duration-300 bg-purple-600 border border-transparent rounded-lg hover:bg-purple-700 group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200 ${isLoading ? 'cursor-not-allowed' : ''}`}
                   disabled={isLoading}
                 >
+                  <span className={`absolute text-white inset-0 w-full h-full transition-transform duration-300  rounded-lg transform scale-110 group-hover:scale-125 ${isLoading ? 'opacity-50' : 'opacity-100'}`}></span>
                   {isLoading ? (
-                    <svg
-                      className="animate-spin h-5 w-5 mr-2 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle className="opacity-25" cx="12" cy="12" r="10" fill="none" />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v2a6 6 0 100 12v2a8 8 0 01-8-8z"
-                      />
-                    </svg>
+                      <svg
+                          className="animate-spin h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                      >
+                          <circle className="opacity-25" cx="12" cy="12" r="10" fill="none" />
+                          <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v2a6 6 0 100 12v2a8 8 0 01-8-8z"
+                          />
+                      </svg>
                   ) : (
-                    "Add Task"
+                      "Add Task"
                   )}
                 </button>
               </form>
@@ -184,7 +185,7 @@ const TaskDApp = () => {
                 {tasks.map((task) => (
                   <li
                     key={task.id}
-                    className="flex items-center justify-between p-2 bg-gray-100 rounded-lg mb-2"
+                    className="flex items-center justify-between p-2 bg-white bg-opacity-30 backdrop-blur-md rounded-lg mb-2 transition-transform transform hover:scale-105"
                   >
                     <div className="flex items-center">
                       {task.isCompleted ? (
@@ -204,7 +205,7 @@ const TaskDApp = () => {
                       {!task.isCompleted && (
                         <button
                           onClick={() => handleCompleteTask(task.id)}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-green-600 hover:text-green-800 transition-colors duration-300"
                           disabled={isLoading}
                         >
                           Complete
@@ -212,7 +213,7 @@ const TaskDApp = () => {
                       )}
                       <button
                         onClick={() => handleDeleteTask(task.id)}
-                        className="text-red-600 hover:text-red-800"
+                        className="text-red-600 hover:text-red-800 transition-colors duration-300"
                         disabled={isLoading}
                       >
                         Delete
