@@ -12,7 +12,7 @@ const TaskDApp = () => {
   const [toast, setToast] = useState({ show: false, title: "", message: "", type: "" });
 
   const address = useAddress();
-  const contractAddress = "0xE6402f0B80c3E097F62977b3F81Cd114217D26B3"; // Update with your deployed contract address
+  const contractAddress = "0x7F57f46EA40910978D3BDdb98884a871A2A4d1A7"; // Update with your deployed contract address
   const [contract, setContract] = useState(null); // State for contract instance
 
   const showToast = (title, message, type = "success") => {
@@ -157,10 +157,25 @@ const TaskDApp = () => {
                 />
                 <button
                   type="submit"
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg"
+                  className="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
                   disabled={isLoading}
                 >
-                  Add Task
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle className="opacity-25" cx="12" cy="12" r="10" fill="none" />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v2a6 6 0 100 12v2a8 8 0 01-8-8z"
+                      />
+                    </svg>
+                  ) : (
+                    "Add Task"
+                  )}
                 </button>
               </form>
 

@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps }) {
         <meta property="twitter:description" content="Manage your tasks seamlessly on the blockchain with TaskFlow. Add, complete, and delete tasks with full transparency and security." />
         
       </Head>
-      <ThirdwebProvider activeChain={customChain}>
+      <ThirdwebProvider activeChain={customChain} clientId={process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}>
         <Component {...pageProps} />
       </ThirdwebProvider>
     </>
